@@ -1,0 +1,74 @@
+#include <iostream>
+#include <string>
+#include <iomanip>
+using namespace std;
+
+const int MAX = 5;
+const int COURSE_COUNT = 3;
+
+void calculateStudent(int i, double Score[][3], double &total, double &average);
+void displayAll(int n, string NameArr[], double Score[][3]);
+int findTopStudent(int n, double Score[][3]);
+
+int main()
+{
+int n = 3;
+string NameArr[MAX] = {"Alice", "Bob", "Carl"};
+double Score[MAX][3] = {
+{90, 85, 95},
+{70, 80, 75},
+{88, 92, 84}
+};
+cout << fixed << setprecision(2);
+
+cout << "=== Student Grade Report ===" << '\n';
+
+displayAll(n, NameArr, Score);
+
+int i = findTopStudent (n, Score);
+double total, average;
+calculateStudent(i, Score, total, average);
+
+cout << "Top Student: " << NameArr[i] << "| Total = " << total << '\n'; 
+return 0;
+}
+
+void calculateStudent(int i, double Score[][3], double &total, double &average)
+{
+total = 0;
+for (int course = 0; course < COURSE_COUNT; ++course)
+{
+    total += Score[i][course];
+}
+
+average = total / COURSE_COUNT;
+}
+
+void displayAll(int n, string NameArr[], double Score[][3])
+{
+for (int i = 0; i < n; ++i) {
+    double total, average;
+    calculateStudent(i, Score, total, average);
+
+    cout << NameArr[i] << "| Math: " << Score[i][0] << "| C Programming: " << Score[i][1] << "| Operating System: " << Score[i][2] << "| Total: " << total << " | Average: " << average << '\n';   
+}
+}
+
+int findTopStudent(int n, double Score[][3])
+{
+int topIndex = 0;
+
+double highestTotal, average;
+calculateStudent(0, Score, highestTotal, average);
+
+for (int i = 1; i < n; ++i) {
+    double total;
+    calculateStudent(i, Score, total, average);
+
+    if (total > highestTotal) {
+        highestTotal = total;
+        topIndex = i;
+    }
+}
+return topIndex;
+}
